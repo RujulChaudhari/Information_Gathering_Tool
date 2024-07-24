@@ -337,6 +337,7 @@ exit
 ![](https://i.imgur.com/dLHUWE9.png)
 2. Go ahead and run the batch file on a test device.
 3. All the info on the test device should be showing up in your discord server now.
+4. Enjoy!!
 ![](https://i.imgur.com/oVW2NQp.png)
 ![](https://i.imgur.com/N2DNV6L.png)
 ![](https://i.imgur.com/SfJjrA7.png)
