@@ -1,10 +1,14 @@
-Introduction
+# Introduction
 This project contains scripts to gather detailed system information and Wi-Fi profiles along with their passwords, and send this information to a specified Discord webhook. The scripts are divided into two PowerShell scripts and one batch file for execution.
 
 Prerequisites:
 - Windows OS
 - PowerShell
 - Discord
+- A Virtual Machine for testing
+
+# Disclamer:
+### This project is intended for educational purposes only. By using this script, you acknowledge that it is your responsibility to ensure it is used ethically and legally. Unauthorized use of this script to access or share sensitive information may be illegal and unethical. Do not use this script for malicious purposes or in environments where you do not have explicit permission to collect system or Wi-Fi information.
 
 # Step 1:
 ## Install discord, and setup a channel to recieve the messages.
